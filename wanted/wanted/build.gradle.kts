@@ -17,6 +17,7 @@ allOpen {
 
 group = "com.kotlin"
 version = "0.0.1-SNAPSHOT"
+val queryDslVersion = "5.0.0" // QueryDSL Version Setting
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_18
@@ -31,6 +32,8 @@ configurations {
 repositories {
 	mavenCentral()
 }
+
+extra["snippetsDir"] = file("build/generated-snippets")
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -47,6 +50,10 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+	implementation ("com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta")
+	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jakarta")
+	annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 }
 
 tasks.withType<KotlinCompile> {
@@ -58,4 +65,23 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+val querydslDir = "$buildDir/generated/querydsl"
+
+sourceSets {
+	getByName("main").java.srcDir(querydslDir)
+}
+
+tasks.withType<JavaCompile> {
+	//options.generatedSourceOutputDirectory = file(querydslDir)
+
+	// 위의 설정이 안되면 아래 설정 사용
+	options.generatedSourceOutputDirectory.set(file(querydslDir))
+}
+
+tasks.named("clean") {
+	doLast {
+		file(querydslDir).deleteRecursively()
+	}
 }
