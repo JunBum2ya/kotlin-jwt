@@ -12,7 +12,7 @@ class QueryDslConfig {
     private lateinit var entityManger : EntityManager
 
     @Bean
-    public fun jpaQueryFactory() : JPAQueryFactory {
+    fun jpaQueryFactory() : JPAQueryFactory {
         return JPAQueryFactory(entityManger)
     }
 

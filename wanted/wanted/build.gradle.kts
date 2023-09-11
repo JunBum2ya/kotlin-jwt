@@ -1,18 +1,30 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+buildscript {
+	dependencies {
+		classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:1.0.10")
+		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.22")
+		classpath("org.jetbrains.kotlin:kotlin-allopen:1.7.22")
+		classpath("org.jetbrains.kotlin:kotlin-noarg:1.7.22")
+	}
+}
+
 plugins {
 	id("org.springframework.boot") version "3.1.3"
 	id("io.spring.dependency-management") version "1.1.3"
+	id("org.asciidoctor.jvm.convert") version "3.3.2"
 	kotlin("jvm") version "1.8.22"
 	kotlin("plugin.spring") version "1.8.22"
 	kotlin("plugin.jpa") version "1.8.22"
 	kotlin("plugin.allopen") version "1.6.21"
+	kotlin("kapt") version "1.7.22"
+	idea
 }
 
 allOpen {
-	annotation("javax.persistence.Entity")
-	annotation("javax.persistence.Embeddable")
-	annotation("javax.persistence.MappedSuperclass")
+	annotation("jakarta.persistence.Entity")
+	annotation("jakarta.persistence.MappedSuperclass")
+	annotation("jakarta.persistence.Embeddable")
 }
 
 group = "com.kotlin"
@@ -50,10 +62,11 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
-	implementation ("com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta")
-	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jakarta")
-	annotationProcessor("jakarta.annotation:jakarta.annotation-api")
-	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+	// QueryDSL Implementation
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.0.5")
+	implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
+	implementation("com.infobip:infobip-spring-data-jpa-querydsl-boot-starter:8.1.1")
+	kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
 }
 
 tasks.withType<KotlinCompile> {
@@ -67,21 +80,13 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
-val querydslDir = "$buildDir/generated/querydsl"
-
-sourceSets {
-	getByName("main").java.srcDir(querydslDir)
-}
-
-tasks.withType<JavaCompile> {
-	//options.generatedSourceOutputDirectory = file(querydslDir)
-
-	// 위의 설정이 안되면 아래 설정 사용
-	options.generatedSourceOutputDirectory.set(file(querydslDir))
-}
-
-tasks.named("clean") {
-	doLast {
-		file(querydslDir).deleteRecursively()
+/**
+ * QueryDSL Build Options
+ */
+idea {
+	module {
+		val kaptMain = file("build/generated/source/kapt/main")
+		sourceDirs.add(kaptMain)
+		generatedSourceDirs.add(kaptMain)
 	}
 }

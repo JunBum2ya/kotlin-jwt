@@ -40,9 +40,11 @@ class MemberRepositoryTest {
     @Test
     @Transactional
     fun findByEmail() {
-        val savedMember : Member = memberRepository.findById(testMember?.getEmail()!!).orElseThrow()
-        Assertions.assertEquals(savedMember.getEmail(),testMember?.getEmail())
-        Assertions.assertEquals(savedMember.getAuthorities().size,2)
+        memberRepository.findByEmailWithAuthority(testMember?.getEmail()!!)
+            ?.let { member: Member -> {
+                Assertions.assertEquals(member.getEmail(),testMember?.getEmail())
+                Assertions.assertEquals(member.getAuthorities().size,2)
+            } }
     }
     //멤버 update
     @Test
