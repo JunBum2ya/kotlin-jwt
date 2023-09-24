@@ -19,7 +19,7 @@ class MemberServiceImpl(
     @Transactional
     @Throws(Exception::class)
     override fun join(request: MemberJoinRequest): Member {
-        val savedMember = memberRepository.findById(request.email)
+        val savedMember = memberRepository.findById(request.email?:throw IllegalArgumentException("이메일이 누락되었습니다."))
         if (savedMember.isEmpty) {
             val member = request.toEntity(passwordEncoder)
             return memberRepository.save(member)
