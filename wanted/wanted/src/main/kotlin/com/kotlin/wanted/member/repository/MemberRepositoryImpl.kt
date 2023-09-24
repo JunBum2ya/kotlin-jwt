@@ -13,6 +13,7 @@ class MemberRepositoryImpl(private val jpaQueryFactory : JPAQueryFactory) : Memb
         return jpaQueryFactory
             .selectFrom(QMember.member)
             .leftJoin(QMember.member.authorities, QAuthority.authority)
+            .where(QMember.member.email.eq(email))
             .fetchFirst()
     }
 }

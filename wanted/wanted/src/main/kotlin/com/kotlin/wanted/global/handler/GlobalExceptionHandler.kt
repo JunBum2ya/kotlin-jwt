@@ -30,4 +30,10 @@ class GlobalExceptionHandler {
         val message = e.allErrors.stream().map { error -> error.defaultMessage }.collect(Collectors.joining("|"))
         return ResponseEntity(ErrorResponse(code = "201",message = message),HttpStatus.BAD_REQUEST)
     }
+
+    @ExceptionHandler(UsernameNotFoundException::class)
+    fun handleUsernameNotFoundException(e : UsernameNotFoundException) : ResponseEntity<ErrorResponse> {
+        logger.error(e.message)
+        return ResponseEntity(ErrorResponse(code = "202", message = "회원가입되지 않은 이메일입니다."),HttpStatus.BAD_REQUEST)
+    }
 }

@@ -30,6 +30,7 @@ class MemberServiceImpl(
 
     @Transactional
     override fun loadUserByUsername(username: String?): UserDetails {
+        println(username)
         username ?: throw IllegalArgumentException("username is null")
         val member: Member = memberRepository.findByEmailWithAuthority(username)
             ?: throw UsernameNotFoundException(username)

@@ -15,7 +15,6 @@ import org.springframework.web.filter.GenericFilterBean
 class CustomJwtFilter(val tokenProvider: TokenProvider) : GenericFilterBean() {
     private val logger = LoggerFactory.getLogger(CustomJwtFilter::class.java)
 
-    val AUTHORIZATION_HEADER = "Authorization"
     override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
         val httpServletRequest = request as HttpServletRequest
         val jwt = resolveToken(httpServletRequest)
@@ -35,5 +34,8 @@ class CustomJwtFilter(val tokenProvider: TokenProvider) : GenericFilterBean() {
         return if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer "))
             bearerToken.substring(7)
         else null
+    }
+    companion object {
+        val AUTHORIZATION_HEADER: String = "Authorization"
     }
 }
