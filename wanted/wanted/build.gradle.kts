@@ -62,8 +62,10 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 	// QueryDSL Implementation
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.0.5")
 	implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
 	implementation("com.infobip:infobip-spring-data-jpa-querydsl-boot-starter:8.1.1")
 	kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")

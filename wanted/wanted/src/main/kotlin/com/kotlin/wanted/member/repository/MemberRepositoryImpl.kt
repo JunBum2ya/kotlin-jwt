@@ -7,12 +7,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
 
 @Repository
-class MemberRepositoryImpl : MemberRepositoryCustom {
-    private lateinit var jpaQueryFactory: JPAQueryFactory;
+class MemberRepositoryImpl(private val jpaQueryFactory : JPAQueryFactory) : MemberRepositoryCustom {
 
-    constructor(jpaQueryFactory: JPAQueryFactory) {
-        this.jpaQueryFactory = jpaQueryFactory;
-    }
     override fun findByEmailWithAuthority(email: String): Member? {
         return jpaQueryFactory
             .selectFrom(QMember.member)

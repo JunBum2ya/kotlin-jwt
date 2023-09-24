@@ -1,5 +1,6 @@
 package com.kotlin.wanted.member.entity
 
+import com.kotlin.wanted.global.converter.BooleanToYnConverter
 import com.kotlin.wanted.global.util.DateUtil
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -17,6 +18,9 @@ class Member(
 ) {
     private val createDate : LocalDateTime = DateUtil.now()
     private var updateDate : LocalDateTime = DateUtil.now()
+    @Column(name = "active_yn", length = 1)
+    @Convert(converter = BooleanToYnConverter::class)
+    var isActive: Boolean = true
     
     //update 실행
     fun update(password: String, authorityList: MutableList<Authority>?) {

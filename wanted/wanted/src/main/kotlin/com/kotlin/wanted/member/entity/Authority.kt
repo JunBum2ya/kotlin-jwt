@@ -15,6 +15,14 @@ data class Authority(
 ) {
     val createDate : LocalDateTime = DateUtil.now()
     var updateDate : LocalDateTime = DateUtil.now()
+    fun getName() : String {
+        return this.name
+    }
+
+    fun getComment() : String? {
+        return this.comment
+    }
+
     fun update(comment: String?) {
         this.comment = comment;
         this.updateDate = DateUtil.now()
