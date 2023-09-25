@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(name = "tb_authority")
-data class Authority(
+class Authority(
         @Id @Column(name = "authority_name", length = 30) private var name: String,
         @Column(length = 50) private var comment : String?
 ) {

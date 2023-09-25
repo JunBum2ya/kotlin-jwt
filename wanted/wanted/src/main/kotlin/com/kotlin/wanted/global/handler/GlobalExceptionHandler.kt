@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -36,4 +37,11 @@ class GlobalExceptionHandler {
         logger.error(e.message)
         return ResponseEntity(ErrorResponse(code = "202", message = "회원가입되지 않은 이메일입니다."),HttpStatus.BAD_REQUEST)
     }
+
+    @ExceptionHandler(JpaObjectRetrievalFailureException::class)
+    fun handleJpaObjectRetrievalFailureException(e : JpaObjectRetrievalFailureException) : ResponseEntity<ErrorResponse> {
+        logger.error(e.message)
+        return ResponseEntity(ErrorResponse(code = "203", message = "error " + e.persistentClassName),HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+
 }

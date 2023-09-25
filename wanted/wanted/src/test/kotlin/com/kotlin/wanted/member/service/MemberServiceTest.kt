@@ -20,14 +20,14 @@ class MemberServiceTest {
     @BeforeEach
     @Transactional
     fun initMember() {
-        val request : MemberJoinRequest = MemberJoinRequest("tistory@naver.com","1234",null)
+        val request : MemberJoinRequest = MemberJoinRequest("tistory@naver.com","1234", listOf( "ADMIN","MEMBER","GUEST" ))
         val savedMember = memberService.join(request)
     }
 
     @Test
     @Transactional
     fun join() {
-        val request : MemberJoinRequest = MemberJoinRequest("tistory@naver.com","1234",null)
+        val request : MemberJoinRequest = MemberJoinRequest("tistory2@naver.com","1234",listOf( "ADMIN","MEMBER","GUEST" ))
         val savedMember = memberService.join(request)
         Assertions.assertEquals(savedMember.getEmail(),request.email)
     }
@@ -36,6 +36,7 @@ class MemberServiceTest {
     @Transactional
     fun loadUserByUsername() {
         val member = memberService.loadUserByUsername("tistory@naver.com")
+        Assertions.assertEquals(member.authorities.size,3)
         Assertions.assertEquals(member.username,"tistory@naver.com")
         Assertions.assertNotEquals(member.password,"1234")
     }

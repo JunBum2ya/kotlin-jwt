@@ -15,14 +15,14 @@ class MemberJoinRequest(
         min = 8,
         message = "패스워드를 8자리 이상 입력하세요."
     ) var password: String?,
-    var authorities: Array<String>?
+    var authorities: List<String>?
 ) {
     fun toEntity(passwordEncoder: PasswordEncoder): Member {
         val authorityEntityList = this.authorities?.let {
-            Arrays.stream(this.authorities)
+            it.stream()
                 .map { authority -> Authority(name = authority, "") }
                 .collect(Collectors.toList())
-        }?: mutableListOf()
+        } ?: mutableListOf()
         return Member(email ?: "", passwordEncoder.encode(password), authorityEntityList)
     }
 
