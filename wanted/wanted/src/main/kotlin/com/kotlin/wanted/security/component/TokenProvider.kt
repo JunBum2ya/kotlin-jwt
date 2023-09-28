@@ -17,7 +17,6 @@ import java.security.Key
 import java.util.*
 import java.util.stream.Collectors
 
-@Slf4j
 @Component
 class TokenProvider(
     @Value("\${jwt.secret}") secret: String,

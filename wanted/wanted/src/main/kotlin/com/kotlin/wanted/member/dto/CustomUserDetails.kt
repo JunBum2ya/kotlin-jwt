@@ -59,4 +59,8 @@ class CustomUserDetails(
     override fun isEnabled(): Boolean {
         return this.isActive
     }
+
+    override fun toString() : String {
+        return "{ \"username\" : \"${this.username}\", \"password\" : \"${this.password}\" }"
+    }
 }

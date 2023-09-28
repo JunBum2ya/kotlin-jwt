@@ -1,9 +1,6 @@
 package com.kotlin.wanted.member.controller
 
-import com.kotlin.wanted.member.dto.MemberJoinRequest
-import com.kotlin.wanted.member.dto.MemberJoinResponse
-import com.kotlin.wanted.member.dto.MemberLoginRequest
-import com.kotlin.wanted.member.dto.MemberLoginResponse
+import com.kotlin.wanted.member.dto.*
 import com.kotlin.wanted.member.service.MemberService
 import com.kotlin.wanted.security.component.TokenProvider
 import com.kotlin.wanted.security.filter.CustomJwtFilter
@@ -34,7 +31,7 @@ class MemberRestController(
         SecurityContextHolder.getContext().authentication = authentication
         val jwt = tokenProvider.createToken(authentication)
         val httpHeaders = HttpHeaders()
-        httpHeaders.add(CustomJwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt)
+        httpHeaders.add(CustomJwtFilter.AUTHORIZATION_HEADER, "Bearer $jwt")
         return ResponseEntity.ok(
             MemberLoginResponse(
                 result = true,
