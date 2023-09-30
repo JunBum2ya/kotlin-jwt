@@ -1,5 +1,6 @@
 package com.kotlin.wanted.security.component
 
+import com.kotlin.wanted.member.dto.CustomUserDetails
 import io.jsonwebtoken.*
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
@@ -55,16 +56,13 @@ class TokenProvider(
             .build()
             .parseClaimsJws(token)
             .body
-        val authorities = Arrays.stream<String>(
+        val authorities = Arrays.stream(
             claims[this.AUTHORITIES_KEY].toString().split(",".toRegex()).dropLastWhile { it.isEmpty() }
                 .toTypedArray())
-            .map<SimpleGrantedAuthority> { role: String ->
-                SimpleGrantedAuthority(
-                    role
-                )
-            }
+            .map { role: String -> SimpleGrantedAuthority(role) }
             .toList()
-        val user = null
+        val user =
+            CustomUserDetails(username = claims.subject, password = "", authorities = authorities, isActive = true)
         return UsernamePasswordAuthenticationToken(user, token, authorities)
     }
 

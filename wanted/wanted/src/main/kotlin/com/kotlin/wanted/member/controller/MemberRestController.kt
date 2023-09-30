@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -49,7 +51,8 @@ class MemberRestController(
     }
 
     @GetMapping("/member/test")
-    fun test() : ResponseEntity<String> {
+    fun test(authentication: Authentication?) : ResponseEntity<String> {
+        println(authentication?.name)
         return ResponseEntity.ok("test complete")
     }
 

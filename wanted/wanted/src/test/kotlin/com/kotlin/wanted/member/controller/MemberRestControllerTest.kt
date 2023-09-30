@@ -1,22 +1,30 @@
 package com.kotlin.wanted.member.controller
 
-import com.kotlin.wanted.member.dto.MemberJoinRequest
+import com.kotlin.wanted.WantedApplication
+import com.kotlin.wanted.member.dto.CustomUserDetails
+import com.kotlin.wanted.member.dto.MemberLoginRequest
 import com.kotlin.wanted.member.service.MemberService
 import com.kotlin.wanted.security.component.TokenProvider
-import com.kotlin.wanted.security.filter.CustomJwtFilter
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeAll
+import jakarta.transaction.Transactional
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.dao.DuplicateKeyException
+import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.http.MediaType
-import org.springframework.test.annotation.Rollback
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.security.test.context.support.WithSecurityContext
+import org.springframework.security.test.context.support.WithUserDetails
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.thymeleaf.extras.springsecurity6.util.SpringSecurityContextUtils
 
 @SpringBootTest
 class MemberRestControllerTest {
@@ -32,20 +40,6 @@ class MemberRestControllerTest {
     @BeforeEach
     fun initMock() {
         mock = MockMvcBuilders.standaloneSetup(memberRestController).build()
-    }
-    @BeforeEach
-    fun initTestMember() {
-        try {
-            memberService.join(
-                MemberJoinRequest(
-                    email = "tistory@tistory.com",
-                    password = "123456789",
-                    listOf("ADMIN", "MEMBER")
-                )
-            )
-        }catch (e : DuplicateKeyException) {
-
-        }
     }
 
     @Test
@@ -81,6 +75,17 @@ class MemberRestControllerTest {
                 .andExpect(jsonPath(composerByName).value("tistory@tistory.com"))
                 .andExpect(jsonPath(composerByResult).value(true))
                 .andExpect(jsonPath(composerByToken).exists())
+                .andReturn()
+            println(result.response.contentAsString)
+        }?:AssertionError()
+    }
+
+    @Test
+    fun testAuthenticate() {
+        mock?.let {
+            val builder = get("/member/test")
+            val result = it.perform(builder).andExpect(status().isOk)
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
                 .andReturn()
             println(result.response.contentAsString)
         }?:AssertionError()
