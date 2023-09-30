@@ -1,6 +1,3 @@
 INSERT INTO tb_authority(authority_name,comment,create_date,update_date) VALUES ('ADMIN','관리자 권한',now(),now())
 INSERT INTO tb_authority(authority_name,comment,create_date,update_date) VALUES ('MEMBER','일반 사용자 권한',now(),now())
 INSERT INTO tb_authority(authority_name,comment,create_date,update_date) VALUES ('GUEST','게스트 권한',now(),now())
-INSERT INTO tb_member(email,password,create_date,update_date,active_yn) VALUES ('tistory@tistory.com','$2a$10$vzptr3Tb4/k3P0IKas1UMupO5SzTjJ960e4gLN2Ofk1EUqX7VB.ZW',now(),now(),'Y')
-INSERT INTO tb_user_authority(email,authority_name) VALUES ('tistory@tistory.com','ADMIN')
-INSERT INTO tb_user_authority(email,authority_name) VALUES ('tistory@tistory.com','MEMBER')

@@ -13,6 +13,6 @@ class JwtAuthenticationEntryPoint : AuthenticationEntryPoint {
         response: HttpServletResponse,
         authException: AuthenticationException
     ) {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"인증이 되지 않았습니다.")
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "인증이 되지 않았습니다.")
     }
 }

@@ -19,14 +19,14 @@ class CustomJwtFilter(val tokenProvider: TokenProvider) : GenericFilterBean() {
         val httpServletRequest = request as HttpServletRequest
         val jwt = resolveToken(httpServletRequest)
         val requestURI = httpServletRequest.requestURI
-        if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
             val authentication = tokenProvider.getAuthentication(jwt!!) // null체크 완료
             SecurityContextHolder.getContext().authentication = authentication
             logger.debug("Security Context에 '${authentication.name}' 인증 정보를 저장했습니다, uri: ${requestURI}")
-        }else {
+        } else {
             logger.debug("유효한 JWT 토큰이 없습니다, uri: ${requestURI}")
         }
-        chain.doFilter(request,response)
+        chain.doFilter(request, response)
     }
 
     private fun resolveToken(request: HttpServletRequest): String? {
@@ -35,6 +35,7 @@ class CustomJwtFilter(val tokenProvider: TokenProvider) : GenericFilterBean() {
             bearerToken.substring(7)
         else null
     }
+
     companion object {
         val AUTHORIZATION_HEADER: String = "Authorization"
     }

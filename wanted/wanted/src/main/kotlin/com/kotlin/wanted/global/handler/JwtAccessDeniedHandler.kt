@@ -13,6 +13,6 @@ class JwtAccessDeniedHandler : AccessDeniedHandler {
         response: HttpServletResponse,
         accessDeniedException: AccessDeniedException
     ) {
-        response.sendError(HttpServletResponse.SC_FORBIDDEN,"접근 권한이 없습니다.")
+        response.sendError(HttpServletResponse.SC_FORBIDDEN, "접근 권한이 없습니다.")
     }
 }

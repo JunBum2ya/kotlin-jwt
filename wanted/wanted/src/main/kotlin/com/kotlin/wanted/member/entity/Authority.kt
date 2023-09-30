@@ -10,16 +10,16 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "tb_authority")
 class Authority(
-        @Id @Column(name = "authority_name", length = 30) private var name: String,
-        @Column(length = 50) private var comment : String?
+    @Id @Column(name = "authority_name", length = 30) private var name: String,
+    @Column(length = 50) private var comment: String?
 ) {
-    val createDate : LocalDateTime = DateUtil.now()
-    var updateDate : LocalDateTime = DateUtil.now()
-    fun getName() : String {
+    val createDate: LocalDateTime = DateUtil.now()
+    var updateDate: LocalDateTime = DateUtil.now()
+    fun getName(): String {
         return this.name
     }
 
-    fun getComment() : String? {
+    fun getComment(): String? {
         return this.comment
     }
 

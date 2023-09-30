@@ -29,19 +29,22 @@ class GlobalExceptionHandler {
     fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
         logger.error(e.message)
         val message = e.allErrors.stream().map { error -> error.defaultMessage }.collect(Collectors.joining("|"))
-        return ResponseEntity(ErrorResponse(code = "201",message = message),HttpStatus.BAD_REQUEST)
+        return ResponseEntity(ErrorResponse(code = "201", message = message), HttpStatus.BAD_REQUEST)
     }
 
     @ExceptionHandler(UsernameNotFoundException::class)
-    fun handleUsernameNotFoundException(e : UsernameNotFoundException) : ResponseEntity<ErrorResponse> {
+    fun handleUsernameNotFoundException(e: UsernameNotFoundException): ResponseEntity<ErrorResponse> {
         logger.error(e.message)
-        return ResponseEntity(ErrorResponse(code = "202", message = "회원가입되지 않은 이메일입니다."),HttpStatus.BAD_REQUEST)
+        return ResponseEntity(ErrorResponse(code = "202", message = "회원가입되지 않은 이메일입니다."), HttpStatus.BAD_REQUEST)
     }
 
     @ExceptionHandler(JpaObjectRetrievalFailureException::class)
-    fun handleJpaObjectRetrievalFailureException(e : JpaObjectRetrievalFailureException) : ResponseEntity<ErrorResponse> {
+    fun handleJpaObjectRetrievalFailureException(e: JpaObjectRetrievalFailureException): ResponseEntity<ErrorResponse> {
         logger.error(e.message)
-        return ResponseEntity(ErrorResponse(code = "203", message = "error " + e.persistentClassName),HttpStatus.INTERNAL_SERVER_ERROR)
+        return ResponseEntity(
+            ErrorResponse(code = "203", message = "error " + e.persistentClassName),
+            HttpStatus.INTERNAL_SERVER_ERROR
+        )
     }
 
 }

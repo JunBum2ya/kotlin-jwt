@@ -14,10 +14,7 @@ class CustomUserDetails(
     private val password: String,
     val authorities: List<GrantedAuthority>,
     val isActive: Boolean
-) : UserDetails, Serializable {
-
-    private val serialVersionUID = 174726374856727L
-
+) : UserDetails {
     companion object {
         fun from(member: Member): UserDetails {
             return CustomUserDetails(username = member.getEmail(),
@@ -26,8 +23,7 @@ class CustomUserDetails(
                     .stream()
                     .map(Authority::getName)
                     .map { role: String -> SimpleGrantedAuthority(role) }
-                    .collect(Collectors.toList())
-                , isActive = member.isActive
+                    .collect(Collectors.toList()), isActive = member.isActive
             )
         }
     }
@@ -60,7 +56,7 @@ class CustomUserDetails(
         return this.isActive
     }
 
-    override fun toString() : String {
+    override fun toString(): String {
         return "{ \"username\" : \"${this.username}\", \"password\" : \"${this.password}\" }"
     }
 }

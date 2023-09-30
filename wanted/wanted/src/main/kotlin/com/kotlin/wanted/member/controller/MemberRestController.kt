@@ -14,8 +14,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
@@ -50,9 +53,33 @@ class MemberRestController(
         return ResponseEntity.ok(MemberJoinResponse(email = member.getEmail(), result = true, message = "success join"))
     }
 
-    @GetMapping("/member/test")
-    fun test(authentication: Authentication?) : ResponseEntity<String> {
-        println(authentication?.name)
+    @PutMapping("/member/update")
+    fun updateMember(
+        @Valid @RequestBody request: MemberUpdateRequest,
+        authentication: Authentication?
+    ): ResponseEntity<MemberUpdateResponse> {
+        authentication?.let {
+            val member = memberService.updateMember(it.name, request)
+            return ResponseEntity.ok(
+                MemberUpdateResponse(
+                    result = true,
+                    email = member.getEmail(),
+                    message = "회원 정보가 변경되었습니다."
+                )
+            )
+        } ?: throw UsernameNotFoundException("인증되지 않은 사용자입니다.")
+    }
+
+    @DeleteMapping("/member/delete")
+    fun deleteMember(authentication: Authentication?): ResponseEntity<MemberDeleteResponse> {
+        authentication?.let {
+            val member = memberService.deleteMember(authentication.name)
+            return ResponseEntity.ok(MemberDeleteResponse(result = true, email = member.getEmail(), message = "삭제되었습니다."))
+        }?:throw UsernameNotFoundException("인증되지 않은 사용자입니다.")
+    }
+
+    @GetMapping("/member/info")
+    fun info(authentication: Authentication?): ResponseEntity<String> {
         return ResponseEntity.ok("test complete")
     }
 

@@ -35,7 +35,7 @@ class MemberRestControllerTest {
     @Autowired
     private lateinit var memberService: MemberService
 
-    var mock : MockMvc? = null
+    var mock: MockMvc? = null
 
     @BeforeEach
     fun initMock() {
@@ -47,17 +47,19 @@ class MemberRestControllerTest {
         mock?.let {
             val composerByName = "email"
             val composerByResult = "result"
-            val builder = post("/member/join").contentType("application/json").content("{\n" +
-                    "    \"email\" : \"tistory2@naver.com\",\n" +
-                    "    \"password\" : \"123456789\"\n" +
-                    "}")
+            val builder = post("/member/join").contentType("application/json").content(
+                "{\n" +
+                        "    \"email\" : \"tistory2@naver.com\",\n" +
+                        "    \"password\" : \"123456789\"\n" +
+                        "}"
+            )
             val result = it.perform(builder).andExpect(status().isOk)
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath(composerByName).value("tistory2@naver.com"))
                 .andExpect(jsonPath(composerByResult).value(true))
                 .andReturn()
             println(result.response.contentAsString)
-        }?:AssertionError()
+        } ?: AssertionError()
     }
 
     @Test
@@ -66,10 +68,12 @@ class MemberRestControllerTest {
             val composerByName = "email"
             val composerByResult = "result"
             val composerByToken = "token"
-            val builder = post("/member/login").contentType("application/json").content("{\n" +
-                    "    \"email\" : \"tistory@tistory.com\",\n" +
-                    "    \"password\" : \"123456789\"\n" +
-                    "}")
+            val builder = post("/member/login").contentType("application/json").content(
+                "{\n" +
+                        "    \"email\" : \"tistory@tistory.com\",\n" +
+                        "    \"password\" : \"123456789\"\n" +
+                        "}"
+            )
             val result = it.perform(builder).andExpect(status().isOk)
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath(composerByName).value("tistory@tistory.com"))
@@ -77,7 +81,7 @@ class MemberRestControllerTest {
                 .andExpect(jsonPath(composerByToken).exists())
                 .andReturn()
             println(result.response.contentAsString)
-        }?:AssertionError()
+        } ?: AssertionError()
     }
 
     @Test
@@ -88,7 +92,7 @@ class MemberRestControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
                 .andReturn()
             println(result.response.contentAsString)
-        }?:AssertionError()
+        } ?: AssertionError()
     }
 
 }

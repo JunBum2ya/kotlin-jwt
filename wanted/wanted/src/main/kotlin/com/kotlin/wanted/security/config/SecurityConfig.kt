@@ -30,10 +30,14 @@ class SecurityConfig(
     fun filterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
         httpSecurity
             .csrf { o -> o.disable() }
-            .exceptionHandling { o -> o.authenticationEntryPoint(jwtAuthenticationEntryPoint).accessDeniedHandler(jwtAccessDeniedHandler) }
+            .exceptionHandling { o ->
+                o.authenticationEntryPoint(jwtAuthenticationEntryPoint).accessDeniedHandler(jwtAccessDeniedHandler)
+            }
             .headers { o -> o.frameOptions { obj -> obj.sameOrigin() } }
             .sessionManagement { o -> o.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
-            .authorizeHttpRequests { o -> o.requestMatchers("/member/login","/member/join").permitAll().anyRequest().authenticated() }
+            .authorizeHttpRequests { o ->
+                o.requestMatchers("/member/login", "/member/join").permitAll().anyRequest().authenticated()
+            }
             .apply(JwtSecurityConfig(tokenProvider))
         return httpSecurity.build()
     }
