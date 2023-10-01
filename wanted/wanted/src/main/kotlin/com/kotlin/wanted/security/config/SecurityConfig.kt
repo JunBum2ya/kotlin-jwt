@@ -41,5 +41,6 @@ class SecurityConfig(
             .apply(JwtSecurityConfig(tokenProvider))
         return httpSecurity.build()
     }
+
 }
 

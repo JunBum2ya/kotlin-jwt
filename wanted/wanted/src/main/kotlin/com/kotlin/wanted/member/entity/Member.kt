@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "tb_member")
 class Member(
-    @Id private val email: String,
+    @Id @Column(length = 40) private val email: String,
     private var password: String,
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -18,9 +18,10 @@ class Member(
         inverseJoinColumns = [JoinColumn(name = "authority_name")]
     )
     private val authorities: MutableList<Authority>,
-    @Enumerated(value = EnumType.STRING) private var gender: Gender?,
+    @Enumerated(value = EnumType.STRING) @Column(length = 20) private var gender: Gender?,
     private var age: Int?,
-    @Column(length = 20) private var phoneNumber: String?
+    @Column(length = 20) private var phoneNumber: String?,
+    @OneToOne(mappedBy = "member",cascade = [CascadeType.ALL]) private var token : RefreshToken?
 ) {
     private val createDate: LocalDateTime = DateUtil.now()
     private var updateDate: LocalDateTime = DateUtil.now()
@@ -75,4 +76,14 @@ class Member(
     fun getPhoneNumber(): String? {
         return this.phoneNumber
     }
+
+    fun getToken() : RefreshToken? {
+        return this.token
+    }
+
+    fun updateToken(token: String) {
+        val refreshToken = RefreshToken(token = token)
+        this.token = refreshToken
+    }
+
 }

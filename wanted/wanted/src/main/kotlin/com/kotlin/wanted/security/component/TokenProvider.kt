@@ -1,6 +1,8 @@
 package com.kotlin.wanted.security.component
 
 import com.kotlin.wanted.member.dto.CustomUserDetails
+import com.kotlin.wanted.member.entity.Authority
+import com.kotlin.wanted.member.entity.Member
 import io.jsonwebtoken.*
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
@@ -35,18 +37,42 @@ class TokenProvider(
         this.key = Keys.hmacShaKeyFor(keyBytes)
     }
 
-    fun createToken(authentication: Authentication): String {
+    fun createAccessToken(authentication: Authentication): String {
         val authorities = authentication.authorities
             .stream()
             .map { obj: GrantedAuthority -> obj.authority }
             .collect(Collectors.joining(","))
-        val now = Date().time
-        val validity = Date(now + tokenValidityInMilliseconds)
         return Jwts.builder()
             .setSubject(authentication.name)
             .claim(this.AUTHORITIES_KEY, authorities)
             .signWith(key, SignatureAlgorithm.HS512)
-            .setExpiration(validity)
+            .setExpiration(Date(Date().time + tokenValidityInMilliseconds))
+            .compact()
+    }
+
+    fun createRefreshToken(authentication: Authentication): String {
+        val authorities = authentication.authorities
+            .stream()
+            .map { obj: GrantedAuthority -> obj.authority }
+            .collect(Collectors.joining(","))
+        return Jwts.builder()
+            .setSubject(authentication.name)
+            .claim(this.AUTHORITIES_KEY, authorities)
+            .signWith(key, SignatureAlgorithm.HS512)
+            .setExpiration(Date(Date().time + tokenValidityInMilliseconds * 1000))
+            .compact()
+    }
+
+    fun createRefreshToken(member : Member): String {
+        val authorities = member.getAuthorities()
+            .stream()
+            .map { authority -> authority.getName() }
+            .collect(Collectors.joining(","))
+        return Jwts.builder()
+            .setSubject(member.getEmail())
+            .claim(this.AUTHORITIES_KEY, authorities)
+            .signWith(key, SignatureAlgorithm.HS512)
+            .setExpiration(Date(Date().time + tokenValidityInMilliseconds * 1000))
             .compact()
     }
 

@@ -5,6 +5,7 @@ import com.kotlin.wanted.member.dto.MemberJoinRequest
 import com.kotlin.wanted.member.dto.MemberUpdateRequest
 import com.kotlin.wanted.member.entity.Member
 import com.kotlin.wanted.member.repository.MemberRepository
+import com.kotlin.wanted.security.component.TokenProvider
 import jakarta.transaction.Transactional
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.data.repository.findByIdOrNull
@@ -16,7 +17,7 @@ import java.lang.IllegalArgumentException
 
 @Service
 class MemberServiceImpl(
-    private var memberRepository: MemberRepository, private var passwordEncoder: PasswordEncoder
+    private var memberRepository: MemberRepository, private var passwordEncoder: PasswordEncoder,private var tokenProvider: TokenProvider
 ) : MemberService {
     @Transactional
     @Throws(Exception::class)
@@ -24,6 +25,8 @@ class MemberServiceImpl(
         val savedMember = memberRepository.findById(request.email ?: throw IllegalArgumentException("이메일이 누락되었습니다."))
         if (savedMember.isEmpty) {
             val member = request.toEntity(passwordEncoder)
+            val token = tokenProvider.createRefreshToken(member)
+            member.updateToken(token)
             return memberRepository.save(member)
         } else {
             throw DuplicateKeyException("이미 사용중인 이메일입니다.")
@@ -50,6 +53,10 @@ class MemberServiceImpl(
     @Transactional
     override fun clear() {
         memberRepository.deleteAll()
+    }
+
+    override fun findByRefreshToken(refreshToken: String): Member {
+        TODO("Not yet implemented")
     }
 
     @Transactional

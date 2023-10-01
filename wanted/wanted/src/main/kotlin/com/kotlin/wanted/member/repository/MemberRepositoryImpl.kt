@@ -16,4 +16,12 @@ class MemberRepositoryImpl(private val jpaQueryFactory: JPAQueryFactory) : Membe
             .where(QMember.member.email.eq(email))
             .fetchFirst()
     }
+
+    override fun findByRefreshToken(token: String): Member? {
+        return jpaQueryFactory
+            .selectFrom(QMember.member)
+            .leftJoin(QMember.member.authorities, QAuthority.authority)
+            .where(QMember.member.token.token.eq(token))
+            .fetchFirst()
+    }
 }

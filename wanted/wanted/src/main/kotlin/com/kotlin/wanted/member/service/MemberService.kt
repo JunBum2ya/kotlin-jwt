@@ -3,6 +3,7 @@ package com.kotlin.wanted.member.service
 import com.kotlin.wanted.member.dto.MemberJoinRequest
 import com.kotlin.wanted.member.dto.MemberUpdateRequest
 import com.kotlin.wanted.member.entity.Member
+import com.kotlin.wanted.member.entity.RefreshToken
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 
@@ -12,4 +13,5 @@ interface MemberService : UserDetailsService {
     fun updateMember(email: String, request: MemberUpdateRequest): Member
     fun deleteMember(email: String): Member
     fun clear()
+    fun findByRefreshToken(refreshToken: String) : Member
 }

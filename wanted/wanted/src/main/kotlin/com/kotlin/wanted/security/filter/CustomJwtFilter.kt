@@ -1,5 +1,6 @@
 package com.kotlin.wanted.security.filter
 
+import com.kotlin.wanted.member.service.MemberService
 import com.kotlin.wanted.security.component.TokenProvider
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletRequest

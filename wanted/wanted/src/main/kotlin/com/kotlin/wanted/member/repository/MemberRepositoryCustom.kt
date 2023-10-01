@@ -4,4 +4,5 @@ import com.kotlin.wanted.member.entity.Member
 
 interface MemberRepositoryCustom {
     fun findByEmailWithAuthority(email: String): Member?
+    fun findByRefreshToken(token : String) : Member?
 }
