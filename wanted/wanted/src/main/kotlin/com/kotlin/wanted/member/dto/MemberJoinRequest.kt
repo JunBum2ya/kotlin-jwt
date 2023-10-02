@@ -35,8 +35,7 @@ class MemberJoinRequest(
             authorities = authorityEntityList,
             gender = gender?.let { Gender.valueOf(it) },
             age = age,
-            phoneNumber = phoneNumber,
-            token = null
+            phoneNumber = phoneNumber
         )
     }
 

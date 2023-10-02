@@ -25,8 +25,6 @@ class MemberServiceImpl(
         val savedMember = memberRepository.findById(request.email ?: throw IllegalArgumentException("이메일이 누락되었습니다."))
         if (savedMember.isEmpty) {
             val member = request.toEntity(passwordEncoder)
-            val token = tokenProvider.createRefreshToken(member)
-            member.updateToken(token)
             return memberRepository.save(member)
         } else {
             throw DuplicateKeyException("이미 사용중인 이메일입니다.")

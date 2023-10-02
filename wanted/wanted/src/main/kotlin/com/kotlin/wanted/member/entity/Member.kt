@@ -20,8 +20,7 @@ class Member(
     private val authorities: MutableList<Authority>,
     @Enumerated(value = EnumType.STRING) @Column(length = 20) private var gender: Gender?,
     private var age: Int?,
-    @Column(length = 20) private var phoneNumber: String?,
-    @OneToOne(mappedBy = "member",cascade = [CascadeType.ALL]) private var token : RefreshToken?
+    @Column(length = 20) private var phoneNumber: String?
 ) {
     private val createDate: LocalDateTime = DateUtil.now()
     private var updateDate: LocalDateTime = DateUtil.now()
@@ -75,15 +74,6 @@ class Member(
 
     fun getPhoneNumber(): String? {
         return this.phoneNumber
-    }
-
-    fun getToken() : RefreshToken? {
-        return this.token
-    }
-
-    fun updateToken(token: String) {
-        val refreshToken = RefreshToken(token = token)
-        this.token = refreshToken
     }
 
 }
