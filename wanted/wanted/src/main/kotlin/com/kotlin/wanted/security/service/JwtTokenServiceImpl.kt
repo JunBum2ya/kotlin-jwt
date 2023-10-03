@@ -1,6 +1,6 @@
 package com.kotlin.wanted.security.service
 
-import com.kotlin.wanted.member.entity.RefreshToken
+import com.kotlin.wanted.security.entity.RefreshToken
 import com.kotlin.wanted.security.component.TokenProvider
 import com.kotlin.wanted.security.dto.JwtToken
 import com.kotlin.wanted.security.dto.TokenSaveParameter
