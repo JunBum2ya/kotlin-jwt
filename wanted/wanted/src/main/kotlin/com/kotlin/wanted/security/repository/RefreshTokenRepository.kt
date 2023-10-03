@@ -1,6 +1,6 @@
 package com.kotlin.wanted.security.repository
 
-import com.kotlin.wanted.member.entity.RefreshToken
+import com.kotlin.wanted.security.entity.RefreshToken
 import org.springframework.data.jpa.repository.JpaRepository
 
 //todo redis로 변경필요

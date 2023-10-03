@@ -1,9 +1,7 @@
 package com.kotlin.wanted.security.dto
 
 import com.kotlin.wanted.member.entity.Member
-import com.kotlin.wanted.member.entity.RefreshToken
 import org.springframework.security.core.Authentication
-import java.util.stream.Collector
 import java.util.stream.Collectors
 
 data class TokenSaveParameter(val email : String, val authorities : List<String>) {
