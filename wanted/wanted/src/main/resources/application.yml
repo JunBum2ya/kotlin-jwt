@@ -15,11 +15,44 @@ spring:
     open-in-view: false
     generate-ddl: true
     defer-datasource-initialization: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
   sql:
     init:
       mode: always
+  h2:
+    console:
+      enabled: false
+  data:
+    rest:
+      base-path: /api
+      detection-strategy: annotated
 jwt:
   header: Authorization
   secret: a2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbQ==
   access-token-validity-in-seconds: 1800
   refresh-token-validity-in-seconds: 86400
+debug: false
+logging:
+  level:
+    com.kotlin.wanted : debug
+    org.springframework.web.servlet : debug
+    org.hibernate.type.descriptor.sql.spi : trace
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: testdb
+  datasource:
+    url : jdbc:h2:~/testdb
+    driver-class-name: org.h2.Driver
+  sql:
+    init:
+      mode: always
+  test:
+    database:
+      replace : none

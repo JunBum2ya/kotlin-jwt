@@ -36,7 +36,8 @@ class SecurityConfig(
             .headers { o -> o.frameOptions { obj -> obj.sameOrigin() } }
             .sessionManagement { o -> o.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests { o ->
-                o.requestMatchers("/member/login", "/member/join", "/member/issue-token").permitAll().anyRequest()
+                o.requestMatchers("/api","/api/**").permitAll()
+                    .requestMatchers("/member/login", "/member/join", "/member/issue-token").permitAll().anyRequest()
                     .authenticated()
             }
             .apply(JwtSecurityConfig(tokenProvider))

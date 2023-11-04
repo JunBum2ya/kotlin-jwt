@@ -1,6 +1,6 @@
 package com.kotlin.wanted.security.entity
 
-import com.kotlin.wanted.global.entity.AbstractTimeEntityListener
+import com.kotlin.wanted.global.entity.AbstractEntityListener
 import jakarta.persistence.*
 
 @Entity
@@ -8,7 +8,7 @@ import jakarta.persistence.*
 class RefreshToken (
     @Column(unique = true) private var email: String,
     private var token: String
-)  : AbstractTimeEntityListener() {
+)  : AbstractEntityListener() {
     @Id @GeneratedValue(strategy = GenerationType.AUTO) private var id: Long? = null
     fun getEmail() : String {
         return this.email
