@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service
 import java.lang.IllegalArgumentException
 
 @Service
-class MemberServiceImpl(
-    private var memberRepository: MemberRepository, private var passwordEncoder: PasswordEncoder,private var tokenProvider: TokenProvider
+class MemberServiceImpl (
+    private var memberRepository: MemberRepository, private var passwordEncoder: PasswordEncoder
 ) : MemberService {
     @Transactional
     @Throws(Exception::class)

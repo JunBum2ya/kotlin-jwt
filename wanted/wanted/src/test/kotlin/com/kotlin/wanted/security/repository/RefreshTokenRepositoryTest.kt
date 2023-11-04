@@ -29,10 +29,10 @@ class RefreshTokenRepositoryTest {
         val refreshToken = RefreshToken(email = "tistory@tistory.com", token = "1232352354653467457547")
         val savedRefreshToken = refreshTokenRepository.save(refreshToken)
         Assertions.assertEquals(refreshToken.getEmail(),savedRefreshToken.getEmail())
-        Assertions.assertNotNull(refreshToken.createdDate)
-        Assertions.assertNotNull(savedRefreshToken.createdDate)
-        Assertions.assertNotNull(refreshToken.updateDate)
-        Assertions.assertNotNull(savedRefreshToken.updateDate)
+        Assertions.assertNotNull(refreshToken.getCreateAt())
+        Assertions.assertNotNull(savedRefreshToken.getCreateBy())
+        Assertions.assertNotNull(refreshToken.getModifiedAt())
+        Assertions.assertNotNull(savedRefreshToken.getModifiedBy())
     }
 
     @Test
@@ -41,8 +41,8 @@ class RefreshTokenRepositoryTest {
         Assertions.assertNotNull(refreshToken)
         refreshToken?.let {
             Assertions.assertEquals(it.getToken(),"12323523546534674547")
-            Assertions.assertNotNull(it.createdDate)
-            Assertions.assertNotNull(it.updateDate)
+            Assertions.assertNotNull(it.getCreateAt())
+            Assertions.assertNotNull(it.getCreateBy())
         }
     }
 
@@ -51,8 +51,8 @@ class RefreshTokenRepositoryTest {
         val refreshToken = refreshTokenRepository.findByEmailAndToken("test@tistory.com","12323523546534674547")
         Assertions.assertNotNull(refreshToken)
         refreshToken?.let {
-            Assertions.assertNotNull(it.createdDate)
-            Assertions.assertNotNull(it.updateDate)
+            Assertions.assertNotNull(it.getCreateAt())
+            Assertions.assertNotNull(it.getCreateBy())
         }
     }
 
