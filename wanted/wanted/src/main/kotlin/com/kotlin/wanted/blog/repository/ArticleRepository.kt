@@ -12,13 +12,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource
 import org.springframework.data.rest.core.annotation.RestResource
 
 @RepositoryRestResource
-interface ArticleRepository : JpaRepository<Article, Long>
-    , QuerydslPredicateExecutor<Article> {
-
-//        @JvmDefault
-//        override fun customize(bindings: QuerydslBindings, root: QArticle) {
-//        bindings.excludeUnlistedProperties(true)
-//        bindings.including(root.title,root.hashTag,root.createAt,root.createdBy)
-//        //bindings.bind(root.title).first { path, value -> StringExpression(path).contains(value) }
-//    }
+interface ArticleRepository : JpaRepository<Article, Long>, QuerydslPredicateExecutor<Article>, ArticleRepositoryCustom {
 }
