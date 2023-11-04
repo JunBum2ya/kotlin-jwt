@@ -1,6 +1,7 @@
 package com.kotlin.wanted.security.entity
 
 import com.kotlin.wanted.global.entity.AbstractEntityListener
+
 import jakarta.persistence.*
 
 @Entity
