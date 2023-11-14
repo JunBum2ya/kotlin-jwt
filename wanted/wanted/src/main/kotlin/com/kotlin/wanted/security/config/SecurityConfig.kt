@@ -36,7 +36,7 @@ class SecurityConfig(
             .headers { o -> o.frameOptions { obj -> obj.sameOrigin() } }
             .sessionManagement { o -> o.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests { o ->
-                o.requestMatchers("/api","/api/**").permitAll()
+                o.requestMatchers("/api","/api/**","/articles").permitAll()
                     .requestMatchers("/member/login", "/member/join", "/member/issue-token").permitAll().anyRequest()
                     .authenticated()
             }
