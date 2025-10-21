@@ -4,5 +4,6 @@
   1. access token 발급 기능 구현
   2. refresh token 발급 기능 구현
   3. jwt 유효기간
+  4. jwt에 데이터 추가
 ### board-service 프로젝트와 추후 통합
 jwt 연동
